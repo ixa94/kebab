@@ -1,0 +1,33 @@
+<h1>Регистрация нового курьера</h1>
+
+<form id="deliverSignup" method="POST" action="/register"> // изменить путь для экшена
+
+  <div class="form-group">
+    <label for="deliverName">Логин:
+      <input id="deliverName" class="form-control" name="deliverName" type="text" required pattern="[A-Za-z]\w+" minlength="4"
+        title="Латинские буквы, цифры и _">
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label for="deliverEmail">Email:
+      <input id="deliverEmail" class="form-control" name="deliverEmail" type="email" required>
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label for="deliverPassword">Пароль:
+      <input id="deliverPassword" class="form-control" name="deliverPassword" type="password" required minlength="8">
+    </label>
+  </div>
+
+ <div class="form-group">
+    <label for="deliverPhone">Номер телефона:
+      <input id="deliverPhone" class="form-control" name="deliverPhone" type="tel" pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}" >
+    </label>
+  </div>
+
+
+  <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+  
+</form>
