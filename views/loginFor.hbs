@@ -1,7 +1,7 @@
 {{#if check}}
 
 USER
-<form method="POST" action="/users">
+<form method="POST" action="/">
   <label for="email">
     Email:
 <input id="email" type="text" name="email">
@@ -11,10 +11,11 @@ USER
  Password:
  <input id="password" type="password" name="password">
   </label>
+  <button>Войти</button>
 </form>
 {{else}}
 DELIVER
-<form method="POST" action="/delivers">
+<form method="POST" action="/courierLog">
   <label for="deliverEmail">
     Email:
 <input id="deliverEmail" type="text" name="deliverEmail">
@@ -24,5 +25,6 @@ DELIVER
  Password:
  <input id="deliverPassword" type="password" name="deliverPassword">
   </label>
+  <button>Войти</button>
 </form>
 {{/if}}
