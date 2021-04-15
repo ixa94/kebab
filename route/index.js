@@ -2,12 +2,30 @@ const express = require('express');
 const { model } = require('../middleware/db-connect');
 const router = express.Router();
 const User = require('../models/users');
-const Order = require('../models/foods');
 const Deliver = require('../models/deliver');
+const Order = require('../models/foods');
 const { sessionChecker } = require('../middleware/auth');
 const bcrypt = require("bcrypt");
 
 const saltRounds = 5
+
+router.get('/', async (req, res) => {
+  let order = await Order.find({}).sort({ price: -1 });
+
+  let ordersDiscount = order.map((el) => {
+    let percent = (+el.price + el.discount) / 100;
+
+    el.discountPrice = percent;
+
+    return el;
+  });
+
+ 
+
+  res.render('dashboard', { ordersDiscount });
+})
+
+
 
 router.get('/', sessionChecker, (req, res) => {
   res.render('dashboard');
@@ -23,6 +41,20 @@ router.get('/regForUser', (req, res) => {
 
 router.get('/register', (req, res) => {
   res.render('register');
+});
+
+router.get('/login/:name', (req, res) => {
+  let name = req.params.name;
+  let check = name === 'user'
+  console.log(check);
+  
+    res.render('loginFor',{check})
+  
+ 
+});
+
+router.get('/login', (req, res) => {
+  res.render('login');
 });
 
 router.post('/registerForUser', async (req, res) => {
@@ -51,6 +83,7 @@ router.post('/registerForUser', async (req, res) => {
 router.get('/courier', (req, res) => {
   res.render('courier')
 })
+
 
 router.post('/registerForDeliver', async (req, res, next) => {
   try {

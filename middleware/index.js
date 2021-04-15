@@ -10,13 +10,15 @@ module.exports = function (app) {
   
   app.use(morgan("dev"));
   
-  // Подключаем views(hbs)
-  app.set("views", path.join(__dirname, "..", "views"));
-  app.set("view engine", "hbs");
+ 
   
   // Body POST запросов.
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
+  
+   // Подключаем views(hbs)
+   app.set("views", path.join(__dirname, "..", "views"));
+   app.set("view engine", "hbs");
 
   // initialize cookie-parser to allow us access the cookies stored in the browser.
   app.use(cookieParser());
