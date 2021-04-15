@@ -20,12 +20,8 @@ router.get('/', async (req, res) => {
     return el;
   });
 
- 
-
   res.render('dashboard', { ordersDiscount });
 })
-
-
 
 router.get('/', sessionChecker, (req, res) => {
   res.render('dashboard');
@@ -88,7 +84,6 @@ router.get('/courier', (req, res) => {
 router.post('/registerForDeliver', async (req, res, next) => {
   try {
   const { deliverName, deliverEmail, deliverPassword, deliverPhone } = req.body;
-  // console.log(req.body);
   const deliver = new Deliver({
     deliverName,
     deliverEmail,
@@ -96,14 +91,9 @@ router.post('/registerForDeliver', async (req, res, next) => {
     deliverPhone,
   });
 
-  console.log(deliver);
-
   await deliver.save();
 
   req.session.deliver = deliver
-
-  console.log('1111111' + deliver);
-  console.log('222222' + req.session.deliver);
 
   res.redirect('/courier')
 
@@ -111,6 +101,62 @@ router.post('/registerForDeliver', async (req, res, next) => {
     next(error)
   }
 })
+
+// =============================================================================
+// Добавляю сессии для логина
+
+
+// For User:
+router
+  .route("/login")
+  .get(sessionChecker, (req, res) => {
+    res.render("login");
+  })
+  .post(async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+
+    // bcrypt - шифровальщик паролей, сравнивает пароль из POST запроса и пароль из БД
+    if (user && (await bcrypt.compare(password, user.password))) {
+      req.session.user = user; // формирование сессии, user добавляется в нее как объект
+      console.log(req.session)
+      res.redirect("/");
+    } else {
+      res.redirect("/login");
+    }
+  });
+
+// router.get("/", (req, res) => {
+//   // если сессия есть, то вытаскиваем Юзер, чтобы рендерить его на странице
+//   if (req.session.user) {
+//     const { user } = req.session;
+//     res.render("dashboard", { name: user.username });
+//   } else {
+//     res.redirect("/login");
+//   }
+// });
+
+router.get("/logout", async (req, res, next) => {
+  // если сессия существует, то выполняем код через try/catch
+  if (req.session.user) {
+    try {
+      // уничтожение сессии (удаление файла)
+      await req.session.destroy();
+      // чистим куку (удаление в браузере)
+      res.clearCookie("user_sid");
+      // перенаправляемся на корень
+      res.redirect("/");
+    } catch (error) {
+      // улетаем в обработчик ошибок (middleware/error-handlers)
+      next(error);
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
+
+
 
 router.get('/dashboard', async (req, res) => {
     
