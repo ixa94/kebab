@@ -2,10 +2,11 @@ const express = require('express');
 const { model } = require('../middleware/db-connect');
 const router = express.Router();
 const User = require('../models/users');
+const Order = require('../models/foods');
 const Deliver = require('../models/deliver');
 const { sessionChecker } = require('../middleware/auth');
 
-router.get('/', (req, res) => {
+router.get('/', sessionChecker, (req, res) => {
   res.render('dashboard');
 });
 
@@ -24,7 +25,7 @@ router.get('/register', (req, res) => {
 router.post('/registerForUser', async (req, res) => {
   try {
   const { userName, userEmail, userPassword, userPhone } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   const user = new User({
     user: userName,
     email: userEmail,
@@ -43,11 +44,10 @@ router.post('/registerForUser', async (req, res) => {
   }
 });
 
-
 router.post('/regForDeliver', async (req, res) => {
   try {
   const { deliverName, deliverEmail, deliverPassword, deliverPhone } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   const deliver = new Deliver({
     deliverName,
     deliverEmail,
@@ -55,16 +55,25 @@ router.post('/regForDeliver', async (req, res) => {
     deliverPhone,
   });
 
-  console.log(deliver);
+  // console.log(deliver);
 
   await deliver.save();
 
   req.session.deliver = deliver
 
-  res.redirect('register');
+  // console.log('1111111' + deliver);
+  // console.log('222222' + req.session.deliver);
+
+  res.redirect('orders'); //????
   } catch (error) {
     next(error)
   }
-});
+})
+
+router.get('/dashboard', async (req, res) => {
+    let orders = await Order.find({})
+    console.log(orders);
+})
+
 
 module.exports = router;

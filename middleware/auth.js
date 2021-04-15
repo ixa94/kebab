@@ -11,10 +11,10 @@ function cookiesCleaner(req, res, next) {
 // middleware функция дял проверки наличия сессии
 const sessionChecker = (req, res, next) => {
   if (req.session.user) {
-    res.redirect("/dashboard");
+    res.redirect("/");
   } 
   if (req.session.deliver) {
-    res.redirect("/dashboard"); // проверить редирект для курьера!! 
+    res.redirect("/"); // проверить редирект????
   } else {
     next();
   }
