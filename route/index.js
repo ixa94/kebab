@@ -13,7 +13,8 @@ router.get('/', async (req, res) => {
   let order = await Order.find({}).sort({ price: -1 });
 
   let ordersDiscount = order.map((el) => {
-    let percent = (+el.price + el.discount) / 100;
+    let percent = (+el.price * el.discount) / 100;
+    percent = Math.floor(+el.price - percent)
 
     el.discountPrice = percent;
 
