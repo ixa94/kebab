@@ -14,8 +14,9 @@ const sessionChecker = (req, res, next) => {
     res.redirect("/");
   } 
   if (req.session.deliver) {
-    res.redirect("/"); // проверить редирект????
-  } else {
+    res.redirect("/courier"); // проверить редирект????
+  } 
+  else {
     next();
   }
 };
