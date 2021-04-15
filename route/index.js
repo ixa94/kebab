@@ -4,11 +4,15 @@ const router = express.Router();
 const User = require('../models/users');
 const Deliver = require('../models/deliver');
 const Order = require('../models/foods');
+const { sessionChecker } = require('../middleware/auth');
+const bcrypt = require("bcrypt");
+
+const saltRounds = 5
 
 router.get('/', async (req, res) => {
-  let orders = await Order.find({}).sort({ price: -1 });
+  let order = await Order.find({}).sort({ price: -1 });
 
-  let ordersDiscount = orders.map((el) => {
+  let ordersDiscount = order.map((el) => {
     let percent = (+el.price + el.discount) / 100;
 
     el.discountPrice = percent;
@@ -16,9 +20,15 @@ router.get('/', async (req, res) => {
     return el;
   });
 
-  //console.log(order);
+ 
 
   res.render('dashboard', { ordersDiscount });
+})
+
+
+
+router.get('/', sessionChecker, (req, res) => {
+  res.render('dashboard');
 });
 
 router.get('/regForDeliver', (req, res) => {
@@ -32,8 +42,6 @@ router.get('/regForUser', (req, res) => {
 router.get('/register', (req, res) => {
   res.render('register');
 });
-
-
 
 router.get('/login/:name', (req, res) => {
   let name = req.params.name;
@@ -50,33 +58,41 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/registerForUser', async (req, res) => {
+  try {
   const { userName, userEmail, userPassword, userPhone } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   const user = new User({
     user: userName,
     email: userEmail,
-    password: userPassword,
-    phone: userPhone,
+    password: await bcrypt.hash(userPassword, saltRounds),
+    phone:userPhone,
   });
 
   console.log(user);
-
   await user.save();
-
+  
+  req.session.user = user
+  
   res.redirect('/');
+  
+} catch (error) {
+  next(error)
+}
 });
 
 router.get('/courier', (req, res) => {
-  res.render('courier');
-});
+  res.render('courier')
+})
 
-router.post('/regForDeliver', async (req, res) => {
+
+router.post('/registerForDeliver', async (req, res, next) => {
+  try {
   const { deliverName, deliverEmail, deliverPassword, deliverPhone } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   const deliver = new Deliver({
     deliverName,
     deliverEmail,
-    deliverPassword,
+    deliverPassword: await bcrypt.hash(deliverPassword, saltRounds),
     deliverPhone,
   });
 
@@ -84,21 +100,23 @@ router.post('/regForDeliver', async (req, res) => {
 
   await deliver.save();
 
-  res.redirect('/courier');
-});
+  req.session.deliver = deliver
 
-router.post('/courier', async (req, res, next) => {
-  let order = new Order({
-    name: req.body.name,
-    place: req.body.place,
-    price: req.body.price,
-    discount: req.body.discount,
-  });
+  console.log('1111111' + deliver);
+  console.log('222222' + req.session.deliver);
 
-  console.log(order);
-  await order.save();
+  res.redirect('/courier')
 
-  res.redirect('/');
-});
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/dashboard', async (req, res) => {
+    
+    console.log(orders);
+})
+
+
 
 module.exports = router;
