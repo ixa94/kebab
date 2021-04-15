@@ -1,9 +1,32 @@
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                
-                <li><a href="/register">Sign Up</a></li>
-                <li><a href="/dashboard">Dashboard</a></li>
-            </ul>
+<div class="container">
+  <ul class="nav navbar-nav">
 
-          
-        </div><!-- /.navbar-collapse -->
+    <li><a href="/register">Sign Up</a></li>
+    <li><a href="/login">Login</a></li>
+  </ul>
+
+
+  <!-- /.navbar-collapse -->
+
+
+
+ 
+  <div class="row">
+     {{#each ordersDiscount}}
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm" style="width: 18rem;">
+        {{!-- <img src="..." class="card-img-top" alt="..."> --}}
+        <div class="card-body">
+          <h5 class="card-title">{{name}}</h5>
+          <p class="card-text">{{place}}</p>
+          <p class="card-text">{{price}}</p>
+          <p class="card-text">{{discountPrice}}</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+  
+</div>

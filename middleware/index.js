@@ -13,6 +13,9 @@ module.exports = function (app) {
   // Body POST запросов.
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
+   // Подключаем views(hbs)
+   app.set("views", path.join(__dirname, "..", "views"));
+   app.set("view engine", "hbs");
 
   // initialize cookie-parser to allow us access the cookies stored in the browser.
   app.use(cookieParser());
@@ -38,7 +41,5 @@ module.exports = function (app) {
   // Подключаем статику
   app.use(express.static(path.join(__dirname, "..", "public")));
 
-  // Подключаем views(hbs)
-  app.set("views", path.join(__dirname, "..", "views"));
-  app.set("view engine", "hbs");
+ 
 };
