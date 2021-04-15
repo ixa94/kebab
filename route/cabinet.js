@@ -60,9 +60,9 @@ app.get('/courier', (req, res) => {
 
 
 
-app.get('/order', (req, res) => {
-  res.render('orders');
-});
+// app.get('/order', (req, res) => {
+//   res.render('orders');
+// });
 
 
 module.exports = app;
@@ -83,5 +83,7 @@ app.post('/courier', async (req, res, next) => {
 
 
 
-  res.redirect('/')
+  // res.redirect('/')
 })
+
+

@@ -7,9 +7,13 @@ module.exports = function (app) {
   const FileStore = require("session-file-store")(session);
   const { cookiesCleaner } = require("./auth");
   const dbConnection = require("./db-connect");
-
+  
   app.use(morgan("dev"));
-
+  
+  // Подключаем views(hbs)
+  app.set("views", path.join(__dirname, "..", "views"));
+  app.set("view engine", "hbs");
+  
   // Body POST запросов.
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
@@ -38,7 +42,4 @@ module.exports = function (app) {
   // Подключаем статику
   app.use(express.static(path.join(__dirname, "..", "public")));
 
-  // Подключаем views(hbs)
-  app.set("views", path.join(__dirname, "..", "views"));
-  app.set("view engine", "hbs");
 };
