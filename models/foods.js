@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   discount: { type: Number, required: true },
   discountPrice: { type: Number },
+  deliver: {type: String},
 });
 
 module.exports = mongoose.model('Order', userSchema);

@@ -2,7 +2,7 @@
 {{#if username}}
   <ul class="nav navbar-nav">
     <li><p>{{username}}</p></li>
-    <li><a href="/login">Logout</a></li>
+    <li><a href="/logout">Logout</a></li>
   </ul>
     <div class="row">
      {{#each ordersDiscount}}
@@ -14,6 +14,7 @@
           <p class="card-text">{{place}}</p>
           <p class="card-text">{{price}}</p>
           <p class="card-text">{{discountPrice}}</p>
+          <p class="card-text">{{deliver}}</p>
           <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
@@ -36,6 +37,7 @@
           <p class="card-text">{{place}}</p>
           <p class="card-text">{{price}}</p>
           <p class="card-text">{{discountPrice}}</p>
+          <p class="card-text">{{deliver}}</p>
         </div>
       </div>
     </div>

@@ -12,40 +12,30 @@ const saltRounds = 5
 
 router.get('/', async (req, res) => {
 
-  if (req.session.user){
-  let username = req.session.user.user 
-  let order = await Order.find({}).sort({ price: -1 });
+  if (req.session.user) {
+    let username = req.session.user.user 
+    let order = await Order.find({}).sort({ price: -1 });
 
-  let ordersDiscount = order.map((el) => {
-    let percent = (+el.price + el.discount) / 100;
-
-    el.discountPrice = percent;
-
-    return el;
-  });
+    let ordersDiscount = order.map((el) => {
+      let percent = (+el.price + el.discount) / 100;
+      el.discountPrice = percent;
+      return el;
+    });
 
   res.render('dashboard', { ordersDiscount,username,checked:!!username });
 
-} if(!req.session.user) {
-  let order = await Order.find({}).sort({ price: -1 });
-
-  let ordersDiscount = order.map((el) => {
+  } 
+  if(!req.session.user) {
+    let order = await Order.find({}).sort({ price: -1 });
+    let ordersDiscount = order.map((el) => {
     let percent = (+el.price + el.discount) / 100;
-
     el.discountPrice = percent;
-
     return el;
   });
 
   res.render('dashboard', { ordersDiscount});
-}
-  
-  
+  }
 })
-
-// router.get('/', sessionChecker, (req, res) => {
-  
-// });
 
 router.get('/regForDeliver', (req, res) => {
   res.render('regForDeliver');
@@ -62,21 +52,20 @@ router.get('/register', (req, res) => {
 router.get('/login/:name', (req, res) => {
   let name = req.params.name;
   let check = name === 'user'
-  // console.log(check);
-  
-    res.render('loginFor',{check})
-  
- 
+  res.render('loginFor',{check})
 });
 
 router.get('/login', (req, res) => {
   res.render('login');
 });
 
+// ========================================РЕГИСТРАЦИЯ========================================
+// Регистрация нового пользователя:
 router.post('/registerForUser', async (req, res, next) => {
   try {
+    // создаем нового пользователя, записываем в базу с шифрованием пароля
   const { userName, userEmail, userPassword, userPhone } = req.body;
-  // console.log(req.body);
+
   const user = new User({
     user: userName,
     email: userEmail,
@@ -84,14 +73,12 @@ router.post('/registerForUser', async (req, res, next) => {
     phone:userPhone,
   });
 
-  // console.log(user);
   await user.save();
   
+  // создаем новую сессию для пользователя
   req.session.user = user
 
   let username = req.session.user.user 
-
-  console.log(req.session.user.user + 'sdfghjk');
   
   res.redirect('/');
   
@@ -100,11 +87,10 @@ router.post('/registerForUser', async (req, res, next) => {
 }
 });
 
-
-
-
+// регистрация нового курьераЖ
 router.post('/registerForDeliver', async (req, res, next) => {
   try {
+    // создаем курьера, записываем в бд
   const { deliverName, deliverEmail, deliverPassword, deliverPhone } = req.body;
   const deliver = new Deliver({
     deliverName,
@@ -114,7 +100,8 @@ router.post('/registerForDeliver', async (req, res, next) => {
   });
 
   await deliver.save();
-
+  
+  // создаем сессию для курьера
   req.session.deliver = deliver
 
   res.redirect('/courier')
@@ -124,10 +111,7 @@ router.post('/registerForDeliver', async (req, res, next) => {
   }
 })
 
-// =============================================================================
-// Добавляю сессии для логина
-
-
+// =========================================ВХОД ДЛЯ ЗАРЕГИСТРИРОВАННЫХ====================================
 // For User:
 router
   .route("/login/user")
@@ -137,19 +121,14 @@ router
 router
   .post('/', async (req, res) => {
     const { email, password } = req.body;
-
-    // console.log(req.body);
     const user = await User.findOne({email});
-      //  console.log(user + 'fff');
 
     // bcrypt - шифровальщик паролей, сравнивает пароль из POST запроса и пароль из БД
     if (user && (await bcrypt.compare(password, user.password))) {
 
       // формирование сессии, user добавляется в нее как объект
       req.session.user = user; 
-      
 
-      // console.log(req.session)
       res.redirect('/');
 
     } else {
@@ -158,12 +137,11 @@ router
   });
 
 router.get("/", (req, res) => {
-  // console.log(req.session.user);
+
   // если сессия есть, то вытаскиваем Юзер, чтобы рендерить его на странице
   if (req.session.user) {
-    // console.log(123);
     const { deliver } = req.session;
-    res.render("dashboard", {user: req.session.user}) //, { name: user.username });
+    res.render("dashboard", {user: req.session.user}) 
   } else {
     res.redirect("/login");
   }
@@ -176,21 +154,17 @@ router
   .get(sessionChecker, (req, res) => {
     res.render("loginFor");
   })
+
 router
   .post('/courierLog', async (req, res) => {
     const { deliverEmail, deliverPassword } = req.body;
-
-    
     const deliver = await Deliver.findOne({deliverEmail});
      
-
     // bcrypt - шифровальщик паролей, сравнивает пароль из POST запроса и пароль из БД
     if (deliver && (await bcrypt.compare(deliverPassword, deliver.deliverPassword))) {
 
       // формирование сессии, user добавляется в нее как объект
       req.session.deliver = deliver; 
-
-      // console.log(req.session)
       res.redirect("/courier");
 
     } else {
@@ -198,19 +172,19 @@ router
     }
   });
 
-router.get("/", (req, res) => {
-  // если сессия есть, то вытаскиваем Юзер, чтобы рендерить его на странице
-  if (req.session.user) {
-    const { deliver } = req.session;
-    res.render("dashboard") //, { name: user.username });
-  } else {
-    res.redirect("/login");
-  }
-});
-
+// router.get("/", (req, res) => {
+//   // если сессия есть, то вытаскиваем Юзер, чтобы рендерить его на странице
+//   if (req.session.user) {
+//     const { deliver } = req.session;
+//     res.render("dashboard")
+//   } else {
+//     res.redirect("/login");
+//   }
+// });
 
 router.get("/logout", async (req, res, next) => {
   // если сессия существует, то выполняем код через try/catch
+  // ДЛЯ ПОЛЬЗОВАТЕЛЯ
   if (req.session.user) {
     try {
       // уничтожение сессии (удаление файла)
@@ -223,16 +197,28 @@ router.get("/logout", async (req, res, next) => {
       // улетаем в обработчик ошибок (middleware/error-handlers)
       next(error);
     }
-  } else {
+  } 
+  // для курьера
+  else if (req.session.deliver) {
+    try {
+      // уничтожение сессии (удаление файла)
+      await req.session.destroy();
+      // чистим куку (удаление в браузере)
+      res.clearCookie("user_sid");
+      // перенаправляемся на корень
+      res.redirect("/");
+    } catch (error) {
+      // улетаем в обработчик ошибок (middleware/error-handlers)
+      next(error);
+    }
+  } 
+  else {
     res.redirect("/login");
   }
 });
 
 
-
 router.get('/dashboard', async (req, res) => {
-    
-    // console.log(orders);
 })
 
 router.get('/courier', (req, res) => {
@@ -245,13 +231,14 @@ router.post('/courier', async (req, res, next) => {
     name: req.body.name,
     place: req.body.place,
     price: req.body.price,
-    discount: req.body.discount
+    discount: req.body.discount,
+    deliver: req.session.deliver.deliverName,
   })
 
   await order.save()
-  res.send({title})
+  res.render('courier', {order} )
+  // res.send({title})
 })
-
 
 module.exports = router;
 

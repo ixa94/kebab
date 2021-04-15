@@ -1,5 +1,5 @@
 <h2>Добавление непринятого заказа</h2>
-<form id="refusedOrder" method="POST" action="/courier">
+<form id="refusedOrder" name='refusedOrder' method="POST" action="/courier">
   <div class="form-group"></div>
   <label for="name">ИМЯ:
     <br>
@@ -33,3 +33,21 @@
   <br>
   <button type="submit" class="btn">ДОБАВИТЬ</button>
 </form>
+<form id="deliverLogout" name='deliverLogout' method="REDIRECT" action="/logout">
+<button type="submit" class="btn">ВЫЙТИ</button>
+</form>
+
+{{#each order}}
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm" style="width: 18rem;">
+        {{!-- <img src="..." class="card-img-top" alt="..."> --}}
+        <div class="card-body">
+          <h5 class="card-title">{{name}}</h5>
+          <p class="card-text">{{place}}</p>
+          <p class="card-text">{{price}}</p>
+          <p class="card-text">{{discount}}</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+{{/each}}
