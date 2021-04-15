@@ -164,6 +164,19 @@ router.get('/dashboard', async (req, res) => {
 })
 
 
+router.post('/courier', async (req, res, next) => {
+ const title = 'Пользователь успешно создан'
+  let order = new Order({
+    name: req.body.name,
+    place: req.body.place,
+    price: req.body.price,
+    discount: req.body.discount
+  })
+
+  await order.save()
+  res.send({title})
+})
+
 
 module.exports = router;
 
