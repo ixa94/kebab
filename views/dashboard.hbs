@@ -1,17 +1,10 @@
 <div class="container">
+{{#if username}}
   <ul class="nav navbar-nav">
-
-    <li><a href="/register">Sign Up</a></li>
-    <li><a href="/login">Login</a></li>
+    <li><p>{{username}}</p></li>
+    <li><a href="/login">Logout</a></li>
   </ul>
-
-
-  <!-- /.navbar-collapse -->
-
-
-
- 
-  <div class="row">
+    <div class="row">
      {{#each ordersDiscount}}
     <div class="col-md-4">
       <div class="card mb-4 shadow-sm" style="width: 18rem;">
@@ -27,6 +20,35 @@
     </div>
     {{/each}}
   </div>
+  {{else}}
+
+<ul class="nav navbar-nav">
+    <li><a href="/register">Sign Up</a></li>
+    <li><a href="/login">Login</a></li>
+  </ul>
+    <div class="row">
+     {{#each ordersDiscount}}
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm" style="width: 18rem;">
+        {{!-- <img src="..." class="card-img-top" alt="..."> --}}
+        <div class="card-body">
+          <h5 class="card-title">{{name}}</h5>
+          <p class="card-text">{{place}}</p>
+          <p class="card-text">{{price}}</p>
+          <p class="card-text">{{discountPrice}}</p>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+{{/if}}
+
+  <!-- /.navbar-collapse -->
+
+
+
+ 
+
 
   
 </div>

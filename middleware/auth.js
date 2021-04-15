@@ -3,7 +3,7 @@
 function cookiesCleaner(req, res, next) {
   // если есть кука и нет сессии - удаляем куку
   if (req.cookies.user_sid && !req.session.user) {
-    res.clearCookie("user_sid");
+    res.clearCookie("login");
   }
   next();
 }
@@ -14,7 +14,7 @@ const sessionChecker = (req, res, next) => {
     res.redirect("/");
   } 
   if (req.session.deliver) {
-    res.redirect("/courier"); // проверить редирект????
+    res.redirect("/courier"); 
   } 
   else {
     next();
