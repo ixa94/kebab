@@ -21,7 +21,7 @@ module.exports = function (app) {
   app.use(
     session({
       store: new FileStore(), // тип хранилища FileStore, который создает нам папку с файлами
-      key: "user_sid", // ключ - название куки
+      key: "login", // ключ - название куки
       secret: "lemon", // слово, используемое для шифрования
       resave: false, //  настройка пересохранения куки, при каждом запросе
       saveUninitialized: false, // настройка создания сессии, даже без авторизации

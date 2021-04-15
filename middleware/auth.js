@@ -12,6 +12,9 @@ function cookiesCleaner(req, res, next) {
 const sessionChecker = (req, res, next) => {
   if (req.session.user) {
     res.redirect("/dashboard");
+  } 
+  if (req.session.deliver) {
+    res.redirect("/dashboard"); // проверить редирект для курьера!! 
   } else {
     next();
   }
