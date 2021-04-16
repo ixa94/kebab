@@ -1,7 +1,7 @@
 <div class="container">
 {{#if username}}
-  <ul class="nav navbar-nav">
-    <li><p>{{username}}</p></li>
+  <ul class="nav navbar-nav flexibel">
+    <li><p class="dashClass">{{username}}</p></li>
     <li><a href="/logout">Logout</a></li>
   </ul>
     <div class="row">
@@ -12,8 +12,8 @@
         <div class="card-body">
           <h5 class="card-title">{{name}}</h5>
           <p class="card-text">{{place}}</p>
-          <p class="card-text">{{price}}</p>
-          <p class="card-text">{{discountPrice}}</p>
+          <p class="card-text">{{price}} &#8381</p>
+          <p class="card-text">{{discountPrice}} &#8381</p>
           <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
@@ -22,7 +22,7 @@
   </div>
   {{else}}
 
-<ul class="nav navbar-nav">
+<ul class="nav navbar-nav flexibel">
     <li><a href="/register">Sign Up</a></li>
     <li><a href="/login">Login</a></li>
   </ul>
@@ -34,21 +34,12 @@
         <div class="card-body">
           <h5 class="card-title">{{name}}</h5>
           <p class="card-text">{{place}}</p>
-          <p class="card-text">{{price}}</p>
-          <p class="card-text">{{discountPrice}}</p>
+          <p class="card-text">{{price}} &#8381</p>
+          <p class="card-text">{{discountPrice}} &#8381</p>
         </div>
       </div>
     </div>
     {{/each}}
   </div>
-{{/if}}
-
-  <!-- /.navbar-collapse -->
-
-
-
- 
-
-
-  
+{{/if}}  
 </div>

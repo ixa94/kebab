@@ -1,30 +1,35 @@
 {{#if check}}
 
-USER
-<form method="POST" action="/">
-  <label for="email">
-    Email:
-<input id="email" type="text" name="email">
-  </label>
- 
-  <label for="password">
- Password:
- <input id="password" type="password" name="password">
-  </label>
-  <button>Войти</button>
-</form>
+
+<div class="container d-flex flex-column">
+  <div class="user_pad" style="color: #d25565;">USER</div>
+  <form method="POST" action="/" class="d-flex flex-column formss">
+    <label for="email" style="color: #d25565;" >
+      Email:
+      <input id="email" type="text" name="email" class="form-control formss" placeholder="Insert your email">
+    </label>
+
+    <label for="password" style="color: #d25565;">
+      Password:
+      <input id="password" type="password" name="password" class="form-control formss" placeholder="Insert your password">
+    </label>
+    <button class="btn btn-primary">Войти</button>
+  </form>
+</div>
 {{else}}
-DELIVER
-<form method="POST" action="/courierLog">
-  <label for="deliverEmail">
+<div class="container d-flex flex-column">
+<div class="user_pad" style="color: #d25565;">DELIVER</div>
+<form method="POST" action="/courierLog" class="d-flex flex-column formss">
+  <label for="deliverEmail" style="color: #d25565;" >
     Email:
-<input id="deliverEmail" type="text" name="deliverEmail">
+    <input id="deliverEmail" type="text" name="deliverEmail" class="form-control formss">
   </label>
- 
-  <label for="deliverPassword">
- Password:
- <input id="deliverPassword" type="password" name="deliverPassword">
+
+  <label for="deliverPassword" style="color: #d25565;" >
+    Password:
+    <input id="deliverPassword" type="password" name="deliverPassword" class="form-control formss">
   </label>
-  <button>Войти</button>
+  <button class="btn btn-primary">Войти</button>
 </form>
+</div>
 {{/if}}

@@ -10,7 +10,8 @@ module.exports = function (app) {
   
   app.use(morgan("dev"));
   
- 
+  // Подключаем статику
+  app.use(express.static(path.join(__dirname, "..", "public")));
   
   // Body POST запросов.
   app.use(express.urlencoded({ extended: true }));
@@ -41,7 +42,6 @@ module.exports = function (app) {
   // возможность очищать куки
   app.use(cookiesCleaner);
 
-  // Подключаем статику
-  app.use(express.static(path.join(__dirname, "..", "public")));
+ 
 
 };

@@ -14,6 +14,10 @@ router.get('/', async (req, res) => {
   if (req.session.user) {
     let username = req.session.user.user;
     let order = await Order.find({}).sort({ price:-1 });
+    order.sort((a,b)=>{
+       return a.price - b.price
+    })
+   
 
     let ordersDiscount = order.map((el) => {
       let percent = (+el.price * el.discount) / 100;
@@ -192,24 +196,7 @@ router.get('/', (req, res) => {
   }
 });
 
-router.get('/logout', async (req, res, next) => {
-  // если сессия существует, то выполняем код через try/catch
-  if (req.session.user) {
-    try {
-      // уничтожение сессии (удаление файла)
-      await req.session.destroy();
-      // чистим куку (удаление в браузере)
-      res.clearCookie('login');
-      // перенаправляемся на корень
-      res.redirect('/');
-    } catch (error) {
-      // улетаем в обработчик ошибок (middleware/error-handlers)
-      next(error);
-    }
-  } else {
-    res.redirect('/login');
-  }
-});
+
 
 router.get('/dashboard', async (req, res) => {
   // console.log(orders);

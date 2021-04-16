@@ -1,0 +1,100 @@
+body{
+  background-image: url("/img/thumb-1920-1093442.jpg");
+  background-size: cover;
+
+}
+
+
+.containers{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+.login_User:first-child{
+  padding-top: 150px;
+}
+.login_User{
+  margin: 35px 0;
+  
+}
+
+
+.login_User a {
+  padding: 12px 40px;
+  text-decoration: none;
+  border: solid 1px black;
+  color:#edb408;
+  font-size: 30px;
+  background-color:#002b52;
+}
+
+
+
+
+
+.svgs{
+  margin-left: 55px;
+  fill:rgb(204, 113, 18,1) ;
+}
+
+
+.formss{
+  margin-top: 25px;
+}
+
+
+.formss:last-child{
+  margin-bottom: 25px;
+}
+
+
+.formss::placeholder{
+  color: #edb408;
+}
+
+.form-control:focus{
+  background-color: #fffdc0;
+  box-shadow: 0 0 0 0.25rem rgb(221,10,53,1/25%);
+  
+}
+
+.formss input{
+  
+  background-color: #fffdc0;
+  color: #2e94b9;
+}
+
+
+.formss button{
+  background-color: #fffdc0;
+  color:#d25565;
+  border:1px solid red;
+  width: 250px;
+}
+
+.user_pad{
+  border: 1px solid black;
+  width: 250px;
+  text-align: center;
+  padding: 3px 0;
+  background-color: #e4d1d3;
+}
+
+
+.dashClass{
+  color: #d25565;
+  font-size: 25px;
+}
+
+
+.flexibel a{
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+
+.flexibel li:last-child{
+  margin-bottom: 15px;
+}
