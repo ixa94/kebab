@@ -28,9 +28,12 @@ align-items: center;
   color:#edb408;
   font-size: 30px;
   background-color:#002b52;
+  opacity: 0.8;
 }
 
-
+.login_User .last{
+  color: #ec0b29;
+}
 
 
 
@@ -42,6 +45,7 @@ align-items: center;
 
 .formss{
   margin-top: 25px;
+  width: 350px;
 }
 
 
@@ -64,6 +68,7 @@ align-items: center;
   
   background-color: #fffdc0;
   color: #2e94b9;
+  
 }
 
 
@@ -97,4 +102,11 @@ align-items: center;
 
 .flexibel li:last-child{
   margin-bottom: 15px;
+}
+
+
+.fons{
+  background-color: #db6997;
+  opacity: 1;
+  color: #1b1819;
 }

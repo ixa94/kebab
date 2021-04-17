@@ -2,34 +2,34 @@
 
 
 <div class="container d-flex flex-column">
-  <div class="user_pad" style="color: #d25565;">USER</div>
+  <div class="user_pad" style="color: #e33d7a;font-weight: bold;">USER</div>
   <form method="POST" action="/" class="d-flex flex-column formss">
-    <label for="email" style="color: #d25565;" >
+    <label for="email" style="color: #e33d7a;font-weight: bold;" >
       Email:
       <input id="email" type="text" name="email" class="form-control formss" placeholder="Insert your email">
     </label>
 
-    <label for="password" style="color: #d25565;">
+    <label for="password" style="color: #e33d7a;font-weight: bold;">
       Password:
       <input id="password" type="password" name="password" class="form-control formss" placeholder="Insert your password">
     </label>
-    <button class="btn btn-primary">Войти</button>
+    <button class="btn btn-primary" style="font-weight: bold;">Войти</button>
   </form>
 </div>
 {{else}}
 <div class="container d-flex flex-column">
-<div class="user_pad" style="color: #d25565;">DELIVER</div>
+<div class="user_pad" style="color: #e33d7a;font-weight: bold;">DELIVER</div>
 <form method="POST" action="/courierLog" class="d-flex flex-column formss">
-  <label for="deliverEmail" style="color: #d25565;" >
+  <label for="deliverEmail" style="color: #e33d7a;font-weight: bold;">
     Email:
     <input id="deliverEmail" type="text" name="deliverEmail" class="form-control formss">
   </label>
 
-  <label for="deliverPassword" style="color: #d25565;" >
+  <label for="deliverPassword" style="color: #e33d7a;font-weight: bold;" >
     Password:
     <input id="deliverPassword" type="password" name="deliverPassword" class="form-control formss">
   </label>
-  <button class="btn btn-primary">Войти</button>
+  <button class="btn btn-primary" style="font-weight: bold;">Войти</button>
 </form>
 </div>
 {{/if}}

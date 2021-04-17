@@ -13,11 +13,10 @@ const saltRounds = 5;
 router.get('/', async (req, res) => {
   if (req.session.user) {
     let username = req.session.user.user;
-    let order = await Order.find({}).sort({ price:-1 });
-    order.sort((a,b)=>{
-       return a.price - b.price
-    })
-   
+    let order = await Order.find({});
+    order.sort((a, b) => {
+      return a.price - b.price;
+    });
 
     let ordersDiscount = order.map((el) => {
       let percent = (+el.price * el.discount) / 100;
@@ -30,7 +29,7 @@ router.get('/', async (req, res) => {
     res.render('dashboard', { ordersDiscount, username, checked: !!username });
   }
   if (!req.session.user) {
-    let order = await Order.find({}).sort({ price:-1});
+    let order = await Order.find({}).sort({ price: -1 });
 
     let ordersDiscount = order.map((el) => {
       let percent = (+el.price * el.discount) / 100;
@@ -43,10 +42,6 @@ router.get('/', async (req, res) => {
     res.render('dashboard', { ordersDiscount });
   }
 });
-
-// router.get('/', sessionChecker, (req, res) => {
-
-// });
 
 router.get('/regForDeliver', (req, res) => {
   res.render('regForDeliver');
@@ -63,8 +58,6 @@ router.get('/register', (req, res) => {
 router.get('/login/:name', (req, res) => {
   let name = req.params.name;
   let check = name === 'user';
-  // console.log(check);
-
   res.render('loginFor', { check });
 });
 
@@ -75,7 +68,6 @@ router.get('/login', (req, res) => {
 router.post('/registerForUser', async (req, res, next) => {
   try {
     const { userName, userEmail, userPassword, userPhone } = req.body;
-    // console.log(req.body);
     const user = new User({
       user: userName,
       email: userEmail,
@@ -83,14 +75,12 @@ router.post('/registerForUser', async (req, res, next) => {
       phone: userPhone,
     });
 
-    // console.log(user);
+  
     await user.save();
 
     req.session.user = user;
 
-    let username = req.session.user.user;
-
-    console.log(req.session.user.user + 'sdfghjk');
+    let username = req.session.user.user;  
 
     res.redirect('/');
   } catch (error) {
@@ -131,18 +121,12 @@ router.route('/login/user').get(sessionChecker, (req, res) => {
   res.render('loginFor');
 });
 router.post('/', async (req, res) => {
-  const { email, password } = req.body;
-
-  // console.log(req.body);
-  const user = await User.findOne({ email });
-  //  console.log(user + 'fff');
-
+  const { email, password } = req.body;  
+  const user = await User.findOne({ email });  
   // bcrypt - шифровальщик паролей, сравнивает пароль из POST запроса и пароль из БД
   if (user && (await bcrypt.compare(password, user.password))) {
     // формирование сессии, user добавляется в нее как объект
     req.session.user = user;
-
-    // console.log(req.session)
     res.redirect('/');
   } else {
     res.redirect('/login/user');
@@ -150,10 +134,8 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/', (req, res) => {
-  // console.log(req.session.user);
   // если сессия есть, то вытаскиваем Юзер, чтобы рендерить его на странице
   if (req.session.user) {
-    // console.log(123);
     const { deliver } = req.session;
     res.render('dashboard', { user: req.session.user }); //, { name: user.username });
   } else {
@@ -166,6 +148,7 @@ router.get('/', (req, res) => {
 router.route('/login/deliver').get(sessionChecker, (req, res) => {
   res.render('loginFor');
 });
+
 router.post('/courierLog', async (req, res) => {
   const { deliverEmail, deliverPassword } = req.body;
 
@@ -186,24 +169,70 @@ router.post('/courierLog', async (req, res) => {
   }
 });
 
-router.get('/', (req, res) => {
-  // если сессия есть, то вытаскиваем Юзер, чтобы рендерить его на странице
+// router.get('/', (req, res) => {
+//   // если сессия есть, то вытаскиваем Юзер, чтобы рендерить его на странице
+//   if (req.session.user) {
+//     const { deliver } = req.session;
+//     res.render('dashboard'); //, { name: user.username });
+//   } else {
+//     res.redirect('/login');
+//   }
+// });
+
+
+// router.get('/dashboard', async (req, res) => {
+//   // console.log(orders);
+// });
+router.get("/logout", async (req, res, next) => {
+  // если сессия существует, то выполняем код через try/catch
+  // ДЛЯ ПОЛЬЗОВАТЕЛЯ
   if (req.session.user) {
-    const { deliver } = req.session;
-    res.render('dashboard'); //, { name: user.username });
-  } else {
-    res.redirect('/login');
+    try {
+      // уничтожение сессии (удаление файла)
+      await req.session.destroy();
+      // чистим куку (удаление в браузере)
+      res.clearCookie("user_sid");
+      // перенаправляемся на корень
+      res.redirect("/");
+    } catch (error) {
+      // улетаем в обработчик ошибок (middleware/error-handlers)
+      next(error);
+    }
+  } 
+  // для курьера
+  else if (req.session.deliver) {
+    try {
+      // уничтожение сессии (удаление файла)
+      await req.session.destroy();
+      // чистим куку (удаление в браузере)
+      res.clearCookie("user_sid");
+      // перенаправляемся на корень
+      res.redirect("/");
+    } catch (error) {
+      // улетаем в обработчик ошибок (middleware/error-handlers)
+      next(error);
+    }
+  } 
+  else {
+    res.redirect("/login");
   }
 });
 
+router.get('/courier',async (req, res) => {
 
+  let order = await Order.find({deliver:req.session.deliver.deliverName}).sort({ price: -1 });
 
-router.get('/dashboard', async (req, res) => {
-  // console.log(orders);
-});
+    let ordersDiscount = order.map((el) => {
+      let percent = (+el.price * el.discount) / 100;
+      percent = Math.floor(+el.price - percent);
+      el.discountPrice = percent;
 
-router.get('/courier', (req, res) => {
-  res.render('courier');
+      return el;
+    });
+
+    const name = ordersDiscount[0].deliver
+
+    res.render('courier', { ordersDiscount ,name});
 });
 
 router.post('/courier', async (req, res, next) => {
@@ -211,15 +240,23 @@ router.post('/courier', async (req, res, next) => {
   let order = new Order({
     name: req.body.name,
     place: req.body.place,
-    price: req.body.price,
+    price: req.body.price,    
     discount: req.body.discount,
+    deliver: req.session.deliver.deliverName
   });
 
   await order.save();
-  res.send({ title });
+  res.redirect('/courier');
 });
 
+// !ТУТ удаление заказа из кабинета курьера .все работате 
 
+
+// router.delete('/delete/:id', async (req,res,next)=>{
+//   console.log(req.params.id)
+//   await Order.deleteOne({_id:req.params.id})
+//   return res.send('Удалено')
+// })
 
 module.exports = router;
 

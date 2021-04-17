@@ -1,32 +1,37 @@
-<h1>Регистрация нового курьера</h1>
+
+<div class="container">
+
+<h1 style="color: #e33d7a">Регистрация нового курьера</h1>
 
 <form id="deliverSignup" method="POST" action="/registerForDeliver"> 
   <div class="form-group">
-    <label for="deliverName">Логин:
-      <input id="deliverName" class="form-control" name="deliverName" type="text" required pattern="[A-Za-z]\w+" minlength="4"
+    <label for="deliverName" style="color: #e33d7a; font-weight:bold;font-size:20px">Логин:
+      <input style=" background-color:#fffdc0; color: #e33d7a; font-weight:bold;font-size:20px"  id="deliverName" class="form-control" name="deliverName" type="text" required pattern="[A-Za-z]\w+" minlength="4"
         title="Латинские буквы, цифры и _">
     </label>
   </div>
 
   <div class="form-group">
-    <label for="deliverEmail">Email:
-      <input id="deliverEmail" class="form-control" name="deliverEmail" type="email" required>
+    <label for="deliverEmail" style="color: #e33d7a; font-weight:bold;font-size:20px">Email:
+      <input style=" background-color:#fffdc0; color: #e33d7a; font-weight:bold;font-size:20px"  id="deliverEmail" class="form-control" name="deliverEmail" type="email" required>
     </label>
   </div>
 
   <div class="form-group">
-    <label for="deliverPassword">Пароль:
-      <input id="deliverPassword" class="form-control" name="deliverPassword" type="password" required minlength="8">
+    <label for="deliverPassword" style="color: #e33d7a; font-weight:bold;font-size:20px">Пароль:
+      <input style=" background-color:#fffdc0; color: #e33d7a; font-weight:bold;font-size:20px"  id="deliverPassword" class="form-control" name="deliverPassword" type="password" required minlength="8">
     </label>
   </div>
 
  <div class="form-group">
-    <label for="deliverPhone">Номер телефона:
-      <input id="deliverPhone" class="form-control" name="deliverPhone" type="tel" maxlength="50" autofocus="autofocus"  pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}" placeholder="+7(___)___-__-__">
+    <label for="deliverPhone" style="color: #e33d7a; font-weight:bold;font-size:20px">Номер телефона:
+      <input style=" background-color:#fffdc0; color: #e33d7a; font-weight:bold;font-size:20px"  id="deliverPhone" class="form-control" name="deliverPhone" type="tel" maxlength="50" autofocus="autofocus"  pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}" placeholder="+7(___)___-__-__">
     </label>
   </div>
 
 
-  <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+  <button type="submit" class="btn btn-primary" style=" background-color:#fffdc0; color: #e33d7a; font-weight:bold;font-size:20px;margin-top:15px">Зарегистрироваться</button>
   
 </form>
+</div>
+
