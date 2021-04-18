@@ -1,21 +1,26 @@
 <div class="container">
-{{#if username}}
+  {{#if username}}
   <ul class="nav navbar-nav flexibel">
-    <li><p style="font-weight: bold;color:#FFD966;font-size:25px">{{username}}</p></li>
+    <li>
+      <p style="font-weight: bold;color:#FFD966;font-size:25px">{{username}}</p>
+    </li>
     <li><a style="font-weight: bold;color:#FFD966;font-size:25px" href="/logout">Выйти</a></li>
   </ul>
-    <div class="row">
-     {{#each ordersDiscount}}
+  <div class="row">
+    {{#each ordersDiscount}}
     <div class="col-md-4">
-      <div class="card mb-4 shadow-sm" style="width: 18rem;">
+      <div class="card mb-4 shadow-sm" style="color:white;">
         {{!-- <img src="..." class="card-img-top" alt="..."> --}}
-        <div class="card-body fons">
-          <h5 class="card-title" style="color: #e33d7a;;">{{name}}</h5>
-          <p class="card-text"><span style="font-weight: bold;color:#FFD966">Адрес:  </span>{{place}}</p>
-          <p class="card-text"><span style="font-weight: bold;color:#FFD966">Цена :</span>{{price}} &#8381</p>
-          <p class="card-text"><span style="font-weight: bold;color:#FFD966">Цена со скидкой :</span>{{discountPrice}} &#8381</p>
-          <p class="card-text"> <span style="font-weight: bold;color:#FFD966">Курьер:  </span> {{deliver}}</p>
-          <a href="#" style=" background-color:#fffdc0; color: #e33d7a; font-weight:bold;font-size:20px" class="btn btn-primary">Купить</a>
+        <div class="card-body fons" style="color: white;">
+          <img src="/img/{{fileName}}" alt="" class="w-100">
+          <h3 class="card-title" style="color: #e33d7a;;">{{name}}</h3>
+          <p class="card-text"><span style="font-weight: bold;color:#000">Адрес: </span>{{place}}</p>
+          <p class="card-text"><span style="font-weight: bold;color:#000">Цена :</span>{{price}} &#8381</p>
+          <p class="card-text"><span style="font-weight: bold;color:#000">Цена со скидкой :</span>{{discountPrice}}
+            &#8381</p>
+          <p class="card-text"> <span style="font-weight: bold;color:#000">Курьер: </span> {{deliver}}</p>
+          <a href="buy/{{this.id}}" style=" background-color:#fffdc0; color: #e33d7a; font-weight:bold;font-size:20px"
+            class="btn btn-primary buyer">Купить</a>
         </div>
       </div>
     </div>
@@ -23,25 +28,28 @@
   </div>
   {{else}}
 
-<ul class="nav navbar-nav flexibel">
+  <ul class="nav navbar-nav flexibel">
     <li><a style="font-weight: bold;color:#FFD966;font-size:25px" href="/register">Зарегистрироваться</a></li>
     <li><a style="font-weight: bold;color:#FFD966;font-size:25px" href="/login">Войти</a></li>
   </ul>
-    <div class="row">
-     {{#each ordersDiscount}}
-    <div class="col-md-4">
-      <div class="card mb-4 shadow-sm" style="width: 18rem;">
-        {{!-- <img src="..." class="card-img-top" alt="..."> --}}
-        <div class="card-body fons">
-          <h5 class="card-title" style="color: #7413e2;;">{{name}}</h5>
-           <p class="card-text"><span style="font-weight: bold;color:#FFD966">Адрес:  </span>{{place}}</p>
-          <p class="card-text"><span style="font-weight: bold;color:#FFD966">Цена :</span>{{price}} &#8381</p>
-          <p class="card-text"><span style="font-weight: bold;color:#FFD966">Цена со скидкой :</span>{{discountPrice}} &#8381</p>
-          <p class="card-text"> <span style="font-weight: bold;color:#FFD966">Курьер:  </span> {{deliver}}</p>
-        </div>
+  <div class="row wip">
+    {{#each ordersDiscount}}
+
+
+    <div class="card">
+      {{!-- <img src="..." class="card-img-top" alt="..."> --}}
+      <div class="card-body fons">
+        <img src="/img/{{fileName}}" alt="" class="w-100">
+        <h3 class="card-title" style="color: #7413e2;;">{{name}}</h3>
+        <p class="card-text"><span style="font-weight: bold;color:#000">Адрес: </span>{{place}}</p>
+        <p class="card-text"><span style="font-weight: bold;color:#000">Цена :</span>{{price}} &#8381</p>
+        <p class="card-text"><span style="font-weight: bold;color:#000">Цена со скидкой :</span>{{discountPrice}} &#8381
+        </p>
+        <p class="card-text"> <span style="font-weight: bold;color:#000">Курьер: </span> {{deliver}}</p>
       </div>
     </div>
+
     {{/each}}
   </div>
-{{/if}}  
+  {{/if}}
 </div>

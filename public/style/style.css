@@ -4,6 +4,13 @@ body{
 
 }
 
+.overH{
+  background-color:  rgba(0,0,0,.6);
+  height:100vh;
+  position: fixed;
+  width: 100%;
+  z-index: -1;
+}
 
 .containers{
 display: flex;
@@ -106,7 +113,37 @@ align-items: center;
 
 
 .fons{
-  background-color: #db6997;
-  opacity: 1;
+ 
+  background-color: transparent;
   color: #1b1819;
+}
+
+
+.card{
+  /* background-color: rgba(63 59 59 / 68%) !important ;
+  border: 1px solid white !important; */
+}
+
+
+.card-text{
+  color: black;
+}
+
+
+.form-group label{
+width: 100%;
+}
+
+.wip .card{
+ max-width: calc(100% - 20px);
+ margin:10px;
+ 
+}
+
+@media screen and (min-width:600px){
+  .wip .card{
+    max-width: calc(33% - 20px);
+    margin:10px;
+    
+   }
 }

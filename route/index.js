@@ -6,7 +6,19 @@ const Deliver = require('../models/deliver');
 const Order = require('../models/foods');
 const { sessionChecker } = require('../middleware/auth');
 const bcrypt = require('bcrypt');
-// const path = require('path')
+const path = require('path')
+const multer  = require('multer')
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    console.log(123)
+    cb(null, 'public/img')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+  }
+})
+
+const upload = multer({ storage: storage })
 
 const saltRounds = 5;
 
@@ -14,9 +26,7 @@ router.get('/', async (req, res) => {
   if (req.session.user) {
     let username = req.session.user.user;
     let order = await Order.find({});
-    order.sort((a, b) => {
-      return a.price - b.price;
-    });
+    
 
     let ordersDiscount = order.map((el) => {
       let percent = (+el.price * el.discount) / 100;
@@ -25,11 +35,18 @@ router.get('/', async (req, res) => {
 
       return el;
     });
+
+    ordersDiscount.sort((a, b) => {
+      return a.discountPrice - b.discountPrice;
+    });
+
+    console.log(ordersDiscount);
 
     res.render('dashboard', { ordersDiscount, username, checked: !!username });
   }
   if (!req.session.user) {
-    let order = await Order.find({}).sort({ price: -1 });
+    let order = await Order.find({});
+    
 
     let ordersDiscount = order.map((el) => {
       let percent = (+el.price * el.discount) / 100;
@@ -37,6 +54,10 @@ router.get('/', async (req, res) => {
       el.discountPrice = percent;
 
       return el;
+    });
+
+    ordersDiscount.sort((a, b) => {
+      return a.discountPrice - b.discountPrice;
     });
 
     res.render('dashboard', { ordersDiscount });
@@ -220,29 +241,39 @@ router.get("/logout", async (req, res, next) => {
 
 router.get('/courier',async (req, res) => {
 
-  let order = await Order.find({deliver:req.session.deliver.deliverName}).sort({ price: -1 });
-
-    let ordersDiscount = order.map((el) => {
-      let percent = (+el.price * el.discount) / 100;
-      percent = Math.floor(+el.price - percent);
-      el.discountPrice = percent;
-
-      return el;
-    });
-
-    const name = ordersDiscount[0].deliver
-
-    res.render('courier', { ordersDiscount ,name});
+  let order = await Order.find({deliver:req.session.deliver.deliverName}).populate('buyer')
+ 
+  
+      let ordersDiscount = order.map((el) => {
+        let percent = (+el.price * el.discount) / 100;
+        percent = Math.floor(+el.price - percent);
+        el.discountPrice = percent;
+  
+        return el;
+      });
+  
+      ordersDiscount.sort((a, b) => {
+        return a.discountPrice - b.discountPrice;
+      });  
+  
+      const name = ordersDiscount[0].deliver
+  
+      return res.render('courier', { ordersDiscount ,name});
+    
+   
+   
 });
 
-router.post('/courier', async (req, res, next) => {
-  const title = 'Пользователь успешно создан';
+router.post('/courier', upload.single('pic'), async (req, res) => {
+  console.log(req.body);
+  console.log(req.file);
   let order = new Order({
     name: req.body.name,
     place: req.body.place,
     price: req.body.price,    
     discount: req.body.discount,
-    deliver: req.session.deliver.deliverName
+    deliver: req.session.deliver.deliverName,
+    fileName:req.file.filename,   
   });
 
   await order.save();
@@ -252,11 +283,20 @@ router.post('/courier', async (req, res, next) => {
 // !ТУТ удаление заказа из кабинета курьера .все работате 
 
 
-// router.delete('/delete/:id', async (req,res,next)=>{
-//   console.log(req.params.id)
-//   await Order.deleteOne({_id:req.params.id})
-//   return res.send('Удалено')
-// })
+router.delete('/delete/:id', async (req,res,next)=>{
+  console.log(req.params.id)
+  await Order.deleteOne({_id:req.params.id})
+  return res.send('Удалено')
+})
+
+
+router.get('/buy/:id', async (req,res)=>{
+  console.log(req.session.user._id + 'fgf');
+const buy = await Order.findOne({_id:req.params.id})
+buy.buyer = req.session.user._id
+await buy.save()
+res.send('ZBS')
+})
 
 module.exports = router;
 

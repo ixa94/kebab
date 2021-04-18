@@ -6,7 +6,9 @@ const userSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   discount: { type: Number, required: true },
   discountPrice: { type: Number },
-  deliver:{type:String}
+  deliver:{type:String},
+  fileName:{type:String},
+  buyer:{type:mongoose.Schema.Types.ObjectId, ref:'User'}
 });
 
 module.exports = mongoose.model('Order', userSchema);
